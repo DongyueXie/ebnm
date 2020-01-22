@@ -15,6 +15,9 @@ summary_results_point_normal = function(x, s, w, a, mu, output) {
 
   if (lfsr_in_output(output)) {
     posterior$lfsr  <- (1 - wpost) + wpost * pnorm(0, abs(pmean_cond), sqrt(pvar_cond))
+    posterior$lfdr <- 1-wpost
+    posterior$pmean_cond <- pmean_cond
+    posterior$pvar_cond <- pvar_cond
   }
 
   return(posterior)

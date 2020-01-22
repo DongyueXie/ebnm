@@ -11,7 +11,8 @@ output_default <- function() {
 #' @export
 #'
 output_all <- function() {
-  return(c(pm_arg_str(), psd_arg_str(), pm2_arg_str(), lfsr_arg_str(),
+  return(c(pm_arg_str(), psd_arg_str(), pm2_arg_str(), lfsr_arg_str(), lfdr_arg_str(),
+           pmean_cond_arg_str(), pvar_cond_arg_str(),
            g_arg_str(), llik_arg_str(), samp_arg_str()))
 }
 
@@ -20,9 +21,12 @@ pm_arg_str   <- function() "posterior_mean"
 psd_arg_str  <- function() "posterior_sd"
 pm2_arg_str  <- function() "posterior_second_moment"
 lfsr_arg_str <- function() "lfsr"
+lfdr_arg_str <- function() 'lfdr'
 g_arg_str    <- function() "fitted_g"
 llik_arg_str <- function() "log_likelihood"
 samp_arg_str <- function() "posterior_sampler"
+pmean_cond_arg_str <- function() "posteror_mean of non-null"
+pvar_cond_arg_str <- function() "posterior_var of non-null"
 
 # Return value names as used in the returned ebnm object.
 df_ret_str   <- function() "posterior"
@@ -30,9 +34,12 @@ pm_ret_str   <- function() "mean"
 psd_ret_str  <- function() "sd"
 pm2_ret_str  <- function() "second_moment"
 lfsr_ret_str <- function() "lfsr"
+lfdr_ret_str <- function() "lfdr"
 g_ret_str    <- function() "fitted_g"
 llik_ret_str <- function() "log_likelihood"
 samp_ret_str <- function() "posterior_sampler"
+pmean_cond_ret_str <- function() "mean of non-null"
+pvar_cond_ret_str <- function() "var of non-null"
 
 # Postprocessing of the returned object is done here.
 as_ebnm <- function(retlist) {
@@ -75,6 +82,15 @@ add_posterior_to_retlist <- function(retlist, posterior, output) {
   }
   if (lfsr_arg_str() %in% output) {
     df[[lfsr_ret_str()]] <- posterior$lfsr
+  }
+  if (lfdr_arg_str() %in% output) {
+    df[[lfdr_ret_str()]] <- posterior$lfdr
+  }
+  if (pmean_cond_arg_str() %in% output) {
+    df[[pmean_cond_ret_str()]] <- posterior$pmean_cond
+  }
+  if (pvar_cond_arg_str() %in% output) {
+    df[[pvar_cond_ret_str()]] <- posterior$pvar_cond
   }
   df <- data.frame(df)
 
